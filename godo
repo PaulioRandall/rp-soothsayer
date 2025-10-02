@@ -1,0 +1,141 @@
+#!/bin/bash
+
+clear
+set -e
+tabs -2
+
+printUsage() {
+	println "Usage:"
+	println "\t" "./godo [help]" "\t\t" "Print usage"
+	println "\t" "./godo clean " "\t\t" "Clean build & Go caches"
+	println "\t" "./godo tidy  " "\t\t" "Tidy Go mod & install packages"
+	println "\t" "./godo test  " "\t\t" "build -> fmt   -> test  -> vet"
+	println "\t" "./godo dev   " "\t\t" "fmt   -> test  -> vet   -> dev"
+	println "\t" "./godo debug " "\t\t" "fmt   -> test  -> vet   -> dev (verbose)"
+	println "\t" "./godo build " "\t\t" "clean -> build -> test  -> vet"
+	println "\t" "./godo commit" "\t\t" "clean -> fmt   -> build -> test -> vet"
+	println "\t" "./godo go test" "\t" "fmt   -> test  -> vet"
+}
+
+println() {
+	for s in "$@"
+	do
+		printf "$s"
+	done
+	printf "\\n"
+}
+
+godoClean() {
+	println "Cleaning..."
+	rm -rf "build/bin" "frontend/dist"
+	go clean -cache -testcache
+}
+
+godoTidy() {
+	println "Tidying..."
+	go mod tidy
+	npm --prefix "./frontend" install
+}
+
+goFmt() {
+	println "Formatting..."
+	go fmt ./...
+}
+
+goTest() {
+	println "Testing..."
+	go test ./... -timeout "2s"
+}
+
+goVet() {
+	println "Vetting..."
+	go vet ./...
+}
+
+wailsBuild() {
+	println "Building..."
+	wails build -v 1 -tags webkit2_41
+}
+
+wailsDev() {
+	println "Dev..."
+	wails dev -v 0 -tags webkit2_41
+}
+
+wailsDebug() {
+	println "Dev..."
+	wails dev -v 3 -tags webkit2_41
+}
+
+if [[ "$1" == "" || "$1" == "help" ]]; then
+	printUsage
+	exit 0
+fi
+
+if [[ "$1" == "clean" ]]; then
+	godoClean
+	exit 0
+fi
+
+if [[ "$1" == "tidy" ]]; then
+	godoTidy
+	exit 0
+fi
+
+if [[ "$1" == "test" ]]; then
+	wailsBuild
+	goFmt
+	goTest
+	goVet
+	exit 0
+fi
+
+if [[ "$1" == "dev" ]]; then
+	goFmt
+	goTest
+	goVet
+	wailsDev
+	exit 0
+fi
+
+if [[ "$1" == "debug" ]]; then
+	goFmt
+	goTest
+	goVet
+	wailsDebug
+	exit 0
+fi
+
+if [[ "$1" == "build" ]]; then
+	godoClean
+	wailsBuild
+	goTest
+	goVet
+	exit 0
+fi
+
+if [[ "$1" == "commit" ]]; then
+	godoClean
+	goFmt
+	wailsBuild
+	goTest
+	goVet
+	exit 0
+fi
+
+if [[ "$1" == "go" ]]; then
+	if [[ "$2" == "test" ]]; then
+		goFmt
+		goTest
+		goVet
+		exit 0
+	fi
+
+	println "I don't understand the option '$1 $2'."
+	printUsage
+	exit 1
+fi
+
+println "I don't understand the option '$1'."
+printUsage
+exit 1
