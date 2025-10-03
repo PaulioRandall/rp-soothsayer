@@ -9,6 +9,7 @@ printUsage() {
 	println "\t" "./godo [help]" "\t\t" "Print usage"
 	println "\t" "./godo clean " "\t\t" "Clean build & Go caches"
 	println "\t" "./godo tidy  " "\t\t" "Tidy Go mod & install packages"
+	println "\t" "./godo fmt   " "\t\t" "fmt"
 	println "\t" "./godo test  " "\t\t" "build -> fmt   -> test  -> vet"
 	println "\t" "./godo dev   " "\t\t" "fmt   -> test  -> vet   -> dev"
 	println "\t" "./godo debug " "\t\t" "fmt   -> test  -> vet   -> dev (verbose)"
@@ -40,6 +41,7 @@ godoTidy() {
 goFmt() {
 	println "Formatting..."
 	go fmt ./...
+	npm --prefix "./frontend" run fmt
 }
 
 goTest() {
@@ -79,6 +81,11 @@ fi
 
 if [[ "$1" == "tidy" ]]; then
 	godoTidy
+	exit 0
+fi
+
+if [[ "$1" == "fmt" ]]; then
+	goFmt
 	exit 0
 fi
 
