@@ -1,4 +1,4 @@
-module github.com/PaulioRandall/xp-wails-video-streaming
+module github.com/PaulioRandall/xp_wails_video_streaming
 
 go 1.23
 

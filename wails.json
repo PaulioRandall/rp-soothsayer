@@ -1,11 +1,11 @@
 {
   "$schema": "https://wails.io/schemas/config.v2.json",
-  "name": "xp-wails-video-streaming",
-  "outputfilename": "xp-wails-video-streaming",
+  "name": "Soothsayer",
+  "outputfilename": "soothsayer",
   "frontend:install": "npm install",
   "frontend:build": "npm run build",
   "frontend:dev:watcher": "npm run dev",
-"frontend:dev:serverUrl": "auto",
+  "frontend:dev:serverUrl": "auto",
   "author": {
     "name": "Paulio",
     "email": "pauliorandall@gmail.com"
