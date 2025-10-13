@@ -1,8 +1,8 @@
 import Entity from './Entity'
 
-export default class Tag extends Entity {
+export default class Code extends Entity {
 	static fromObject(obj) {
-		const t = Entity.populateFromObject(new Tag(), obj)
+		const t = Entity.populateFromObject(new Code(), obj)
 
 		t._description = obj.description
 
@@ -27,3 +27,4 @@ export default class Tag extends Entity {
 		return obj
 	}
 }
+

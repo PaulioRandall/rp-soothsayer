@@ -1,12 +1,12 @@
 import Entity from './Entity'
 
-export default class MediaSection extends Entity {
+export default class PointOfInterest extends Entity {
 	static fromObject(obj) {
-		const ms = Entity.populateFromObject(new MediaSection(), obj)
+		const poi = Entity.populateFromObject(new PointOfInterest(), obj)
 	
 		// TODO
 
-		return ms
+		return poi
 	}
 
 	constructor() {

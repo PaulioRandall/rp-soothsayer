@@ -1,19 +1,24 @@
 export default class Entity {
+	static populateFromObject(entity, obj) {
+		entity._parentId = obj.parentId
+		entity._id = obj.id
+		entity._name = obj.name
+
+		return entity
+	}
+
 	constructor() {
+		this._parentId = ''
 		this._id = ''
 		this._name = ''
 	}
 
-	set id(v) {
-		this._id = v
+	get parentId() {
+		return this._parentId
 	}
 
 	get id() {
 		return this._id
-	}
-
-	set name(v) {
-		this._name = v
 	}
 
 	get name() {
@@ -22,6 +27,7 @@ export default class Entity {
 
 	toObject() {
 		return {
+			parentId: this._parentId,
 			id: this._id,
 			name: this._name,
 		}

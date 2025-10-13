@@ -1,25 +1,27 @@
-export default class Study {
-	constructor() {
-		this._id = ''
-		this._name = ''
+import Media from './Media'
+import Session from './Session'
+import Code from './Code'
+import Tag from './Tag'
 
+export default class Study {
+	static fromObject(obj) {
+		const study = new Study()
+
+		study._name = obj.name
+		g_populateArrayFromObjectArray(study._media, obj.media, Media.fromObject)
+		g_populateArrayFromObjectArray(study._sessions, obj.sessions, Media.fromObject)
+		g_populateArrayFromObjectArray(study._codes, obj.codes, Code.fromObject)
+		g_populateArrayFromObjectArray(study._tags, obj.tags, Tag.fromObject)
+
+		return study
+	}
+
+	constructor() {
+		this._name = ""
 		this._media = []
 		this._sessions = []
-		this._observationCodes = []
-	}
-
-	set id(v) {
-		checkId(v)
-		this._id = v
-	}
-
-	get id() {
-		return this._id
-	}
-
-	set name(v) {
-		checkName(v)
-		this._name = v
+		this._codes = []
+		this._tags = []
 	}
 
 	get name() {
@@ -34,65 +36,22 @@ export default class Study {
 		return this._sessions
 	}
 
-	get observationCodes() {
-		return this._observationCodes
+	get codes() {
+		return this._codes
 	}
 
-	fromObject(obj) {
-		if (obj.id) {
-			this.id = obj.id
-		}
-
-		if (obj.name) {
-			this.name = obj.name
-		}
-
-		if (obj.media) {
-			this.addMediaFromObject(obj.media)
-		}
-
-		if (obj.sessions) {
-			this.addSessionsFromObject(obj.sessions)
-		}
-
-		if (obj.observationCodes) {
-			this.addObservationCodesFromObject(obj.observationCodes)
-		}
+	get tags() {
+		return this._tags
 	}
 
-	toObject(obj) {
-		// TODO
-	}
-
-	addMediaFromObject(obj) {
-		// TODO: could be single media object or array of media objects
-	}
-
-	addSessionsFromObject(obj) {
-		// TODO: could be single media object or array of media objects
-	}
-
-	addObservationCodesFromObject(obj) {
-		// TODO: could be single media object or array of media objects
+	toObject() {
+		return {
+			name: this._name,
+			media: g_toObjects(this._media),
+			sessions: g_toObjects(this._sessions),
+			codes: g_toObjects(this._codes),
+			tags: g_toObjects(this._tags),
+		}
 	}
 }
 
-function checkId(id) {
-	if (typeof id !== 'string') {
-		throw new Error('Study ID must be a non-empty string')
-	}
-
-	if (id.trim() === '') {
-		throw new Error('Study ID must be a non-empty string')
-	}
-}
-
-function checkName(name) {
-	if (typeof name !== 'string') {
-		throw new Error('Study name must be a non-empty string')
-	}
-
-	if (name.trim() === '') {
-		throw new Error('Study name must be a non-empty string')
-	}
-}

@@ -1,4 +1,15 @@
 <script>
+	import "./global.js"
+
+	import {
+		Study,
+		Media,
+		MediaSection,
+		Session,
+		PointOfInterest,
+		Code,
+		Tag
+	} from './models'
 </script>
 
 <main>
