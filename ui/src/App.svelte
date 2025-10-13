@@ -1,13 +1,8 @@
 <script>
-	import { Video } from './video'
-	import { Notes } from './notes'
-	import AdjustableLayout from './AdjustableLayout.svelte'
 </script>
 
 <main>
-	<div class="main-layout">
-		<AdjustableLayout left={Video} right={Notes} />
-	</div>
+	<div class="main-layout"></div>
 </main>
 
 <style>

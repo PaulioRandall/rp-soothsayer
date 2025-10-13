@@ -1,6 +1,6 @@
-module github.com/PaulioRandall/xp_wails_video_streaming
+module soothsayer
 
-go 1.23
+go 1.24.6
 
 require github.com/wailsapp/wails/v2 v2.10.2
 

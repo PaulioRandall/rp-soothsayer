@@ -3,23 +3,23 @@ package main
 import (
 	"embed"
 
-	"github.com/PaulioRandall/xp_wails_video_streaming/backend"
+	"soothsayer/api"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 )
 
-//go:embed all:frontend/dist
+//go:embed all:ui/dist
 var assets embed.FS
 
 func main() {
-	app := backend.NewApp()
+	app := api.NewApp()
 
 	err := wails.Run(&options.App{
-		Title:  "Rapid Prototype: Soothsayer",
-		Width:  1024,
-		Height: 800,
+		Title:  "Soothsayer",
+		Width:  800,
+		Height: 600,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},

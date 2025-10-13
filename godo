@@ -28,20 +28,20 @@ println() {
 
 godoClean() {
 	println "Cleaning..."
-	rm -rf "build/bin" "frontend/dist"
+	rm -rf "build/bin" "ui/dist"
 	go clean -cache -testcache
 }
 
 godoTidy() {
 	println "Tidying..."
 	go mod tidy
-	npm --prefix "./frontend" install
+	npm --prefix "./ui" install
 }
 
 goFmt() {
 	println "Formatting..."
 	go fmt ./...
-	npm --prefix "./frontend" run fmt
+	npm --prefix "./ui" run fmt
 }
 
 goTest() {
