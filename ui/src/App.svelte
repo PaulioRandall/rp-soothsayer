@@ -1,10 +1,7 @@
 <script>
 	import "./global.js"
 
-	import {
-		Study,
-		validateData
-	} from './study'
+	import { 		Study	} from './study'
 </script>
 
 <main>

@@ -15,8 +15,8 @@ export default class Study {
 							id: "",
 							name: "",
 							tagIds: [""],
-							startTime: 0, // in seconds
-							endTime: 0, // in seconds
+							start: 0, // in seconds
+							end: 0, // in seconds
 						}
 					]
 				}
@@ -32,7 +32,6 @@ export default class Study {
 							name: "",
 							tagIds: [""],
 							startTime: 0, // in seconds
-							endTime: -1, // in seconds
 							quote: "",
 							description: "",
 						}

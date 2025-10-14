@@ -10,8 +10,7 @@ printUsage() {
 	println "\t" "./godo clean " "\t\t" "Clean Go caches"
 	println "\t" "./godo tidy  " "\t\t" "Tidy go.mod"
 	println "\t" "./godo fmt   " "\t\t" "format"
-	println "\t" "./godo test  " "\t\t" "fmt -> build -> test -> vet"
-	println "\t" "./godo commit" "\t\t" "clean -> tidy -> fmt -> build -> test -> vet"
+	println "\t" "./godo test  " "\t\t" "format -> test -> vet"
 }
 
 println() {
@@ -22,4 +21,58 @@ println() {
 	printf "\\n"
 }
 
-# TODO
+goClean() {
+	println "Cleaning Go caches..."
+	go clean -cache -testcache
+}
+
+goTidy() {
+	println "Tidying Go mod..."
+	go mod tidy
+}
+
+goFmt() {
+	println "Formatting Go code..."
+	go fmt ./...
+}
+
+goTest() {
+	println "Testing Go code..."
+	go test ./... -timeout "2s"
+}
+
+goVet() {
+	println "Vetting Go code..."
+	go vet ./...
+}
+
+if [[ "$1" == "" || "$1" == "help" ]]; then
+	printUsage
+	exit 0
+fi
+
+if [[ "$1" == "clean" ]]; then
+	goClean
+	exit 0
+fi
+
+if [[ "$1" == "tidy" ]]; then
+	goTidy
+	exit 0
+fi
+
+if [[ "$1" == "fmt" ]]; then
+	goFmt
+	exit 0
+fi
+
+if [[ "$1" == "test" ]]; then
+	goFmt
+	goTest
+	goVet
+	exit 0
+fi
+
+println "I don't understand the option '$1'."
+printUsage
+exit 1
