@@ -1,7 +1,0 @@
-	export { default as Study } from './Study'
-	export { default as Media } from './Media'
-	export { default as MediaSection } from './MediaSection'
-	export { default as Session } from './Session'
-	export { default as PointOfInterest } from './PointOfInterest'
-	export { default as Code } from './Code'
-	export { default as Tag } from './Tag'

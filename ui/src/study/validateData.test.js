@@ -1,4 +1,4 @@
-import { validateStringField, validateTagObject } from './validateObject'
+import { validateStringField, validateTagObject } from './validateData'
 
 function testEntity(func, validObject) {
 	const invalidId = structuredClone(validObject)

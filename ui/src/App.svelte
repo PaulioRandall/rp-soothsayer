@@ -3,13 +3,8 @@
 
 	import {
 		Study,
-		Media,
-		MediaSection,
-		Session,
-		PointOfInterest,
-		Code,
-		Tag
-	} from './models'
+		validateData
+	} from './study'
 </script>
 
 <main>
