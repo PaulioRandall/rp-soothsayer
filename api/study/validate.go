@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+type JsonType = string
 type JsonValue = any
 type JsonObject = map[string]JsonValue
 type JsonArray = []JsonValue
@@ -12,23 +13,15 @@ type Err = func(msg string, args ...any)
 type SchemaPropFields = map[string]JsonObject
 
 const (
-	TypeObject  string = "object"
-	TypeArray          = "array"
-	TypeString         = "string"
-	TypeNumber         = "number"
-	TypeUnknown        = "unknown"
+	TypeObject  JsonType = "object"
+	TypeArray            = "array"
+	TypeString           = "string"
+	TypeNumber           = "number"
+	TypeUnknown          = "unknown"
 )
 
-func getPropType(schema JsonObject) string {
-	return schema["type"].(string)
-}
-
-func getSchemaPropFields(schema JsonObject) SchemaPropFields {
-	return schema["fields"].(SchemaPropFields)
-}
-
-func getPropItems(schema JsonObject) JsonObject {
-	return schema["items"].(JsonObject)
+func getPropValue[R any](schema JsonObject, name string) R {
+	return schema[name].(R)
 }
 
 func newErrorSlice() (*[]string, Err) {
@@ -48,7 +41,7 @@ func validateSchema(
 	prop JsonValue,
 	propName string,
 ) {
-	propType := getPropType(schema)
+	propType := getPropValue[JsonType](schema, "type")
 
 	typeMatch := validateSchemaType(
 		err,
@@ -76,7 +69,7 @@ func validateSchemaFields(
 	prop JsonObject,
 	propName string,
 ) {
-	for name, subSchema := range getSchemaPropFields(schema) {
+	for name, subSchema := range getPropValue[SchemaPropFields](schema, "fields") {
 		validateSchema(
 			err,
 			subSchema,
@@ -92,7 +85,7 @@ func validateSchemaItems(
 	prop JsonArray,
 	propName string,
 ) {
-	itemSchema := getPropItems(schema)
+	itemSchema := getPropValue[JsonObject](schema, "items")
 
 	for i, v := range prop {
 		validateSchema(
@@ -106,7 +99,7 @@ func validateSchemaItems(
 
 func validateSchemaType(
 	err Err,
-	expType string,
+	expType JsonType,
 	prop JsonValue,
 	propName string,
 ) bool {
@@ -120,7 +113,7 @@ func validateSchemaType(
 	return false
 }
 
-func determineType(prop JsonValue) string {
+func determineType(prop JsonValue) JsonType {
 	switch prop.(type) {
 	case float64:
 		return TypeNumber
