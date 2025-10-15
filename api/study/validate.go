@@ -9,7 +9,7 @@ type JsonObject = map[string]JsonValue
 type JsonArray = []JsonValue
 
 type Err = func(msg string, args ...any)
-type PropFields = map[string]JsonObject
+type SchemaPropFields = map[string]JsonObject
 
 const (
 	TypeObject  string = "object"
@@ -23,61 +23,23 @@ func getPropType(schema JsonObject) string {
 	return schema["type"].(string)
 }
 
-func getPropFields(schema JsonObject) PropFields {
-	return schema["fields"].(PropFields)
+func getSchemaPropFields(schema JsonObject) SchemaPropFields {
+	return schema["fields"].(SchemaPropFields)
 }
 
 func getPropItems(schema JsonObject) JsonObject {
 	return schema["items"].(JsonObject)
 }
 
-// TODO make generic
-func getObject(obj JsonObject, name string) JsonObject {
-	return obj[name].(JsonObject)
-}
-func getString(obj JsonObject, name string) string {
-	return obj[name].(string)
-}
-
-var mediaSectionSchema = JsonObject{
-	"type": "object",
-	"fields": PropFields{
-		"id": JsonObject{
-			"type": "string",
-		},
-		"name": JsonObject{
-			"type": "string",
-		},
-		"tags": JsonObject{
-			"type": "array",
-			"items": JsonObject{
-				"type": "string",
-			},
-		},
-		"start": JsonObject{
-			"type": "number",
-		},
-		"end": JsonObject{
-			"type": "number",
-		},
-	},
-}
-
-func ValidateMediaSection(mediaSection JsonObject) []string {
+func newErrorSlice() (*[]string, Err) {
 	errors := []string{}
+
 	err := func(msg string, args ...any) {
 		msg = fmt.Sprintf(msg, args...)
 		errors = append(errors, msg)
 	}
 
-	validateSchema(
-		err,
-		mediaSectionSchema,
-		mediaSection,
-		"media_section",
-	)
-
-	return errors
+	return &errors, err
 }
 
 func validateSchema(
@@ -114,7 +76,7 @@ func validateSchemaFields(
 	prop JsonObject,
 	propName string,
 ) {
-	for name, subSchema := range getPropFields(schema) {
+	for name, subSchema := range getSchemaPropFields(schema) {
 		validateSchema(
 			err,
 			subSchema,
