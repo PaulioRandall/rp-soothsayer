@@ -25,7 +25,7 @@ export default class Study {
 					id: "",
 					name: "",
 					tagIds: [""],
-					observation: [
+					observations: [
 						{
 							id: "",
 							name: "",

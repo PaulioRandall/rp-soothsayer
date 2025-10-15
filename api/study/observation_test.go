@@ -11,7 +11,6 @@ func Test_Observation_1(t *testing.T) {
 
 	observation := parseJson(`{
 		"id": "123",
-		"name": "Abc",
 		"tags": ["P1", "T1"],
 		"start": 123,
 		"quote": "Oops!",
@@ -30,7 +29,6 @@ func Test_Observation_2(t *testing.T) {
 
 	observation := parseJson(`{
 		"id": "123",
-		"name": "Abc",
 		"tags": ["P1", "T1"],
 		"start": 0,
 		"quote": ""
@@ -50,7 +48,6 @@ func Test_Observation_3(t *testing.T) {
 
 	observation := parseJson(`{
 		"id": "123",
-		"name": "Abc",
 		"tags": ["P1", "T1"],
 		"start": "123",
 		"quote": 123,

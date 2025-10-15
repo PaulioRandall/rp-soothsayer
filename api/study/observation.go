@@ -6,9 +6,6 @@ var observationSchema = JsonObject{
 		"id": JsonObject{
 			"type": "string",
 		},
-		"name": JsonObject{
-			"type": "string",
-		},
 		"tags": JsonObject{
 			"type": "array",
 			"items": JsonObject{
