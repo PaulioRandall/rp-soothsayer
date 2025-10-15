@@ -1,7 +1,7 @@
 <script>
-	import "./global.js"
+	import './global.js'
 
-	import { 		Study	} from './study'
+	import { Study } from './study'
 </script>
 
 <main>

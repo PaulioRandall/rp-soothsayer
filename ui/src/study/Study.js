@@ -1,4 +1,3 @@
-
 export default class Study {
 	constructor(data) {
 		this._data = data /* = {
@@ -85,12 +84,12 @@ export default class Study {
 	}
 
 	// Creates a new tag.
-	newTag(name, description="") {
+	newTag(name, description = '') {
 		// TODO
 	}
 
 	// Updates an existing tag.
-	updateTag(id, { name=null, description=null }) {
+	updateTag(id, { name = null, description = null }) {
 		// TODO
 	}
 
@@ -115,4 +114,3 @@ export default class Study {
 		// TODO
 	}
 }
-

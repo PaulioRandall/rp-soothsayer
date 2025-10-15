@@ -1,4 +1,3 @@
-
 export default function globalSetup() {
 	globalThis.g_or = g_or
 	globalThis.g_toObject = g_toObject
