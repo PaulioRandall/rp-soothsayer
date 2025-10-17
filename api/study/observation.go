@@ -12,6 +12,9 @@ var observationSchema = JsonObject{
 				"type": "string",
 			},
 		},
+		"mediaSection": JsonObject{
+			"type": "string",
+		},
 		"start": JsonObject{
 			"type": "number",
 		},
@@ -20,6 +23,12 @@ var observationSchema = JsonObject{
 		},
 		"description": JsonObject{
 			"type": "string",
+		},
+		"codes": JsonObject{
+			"type": "array",
+			"items": JsonObject{
+				"type": "string",
+			},
 		},
 	},
 }
