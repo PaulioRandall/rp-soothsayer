@@ -1,5 +1,10 @@
 package study
 
+// TODO
+// Create tests by creating mock schemas and data to test.
+// Copy from the entity test files.
+// Once done, delete obsolete tests in the entity test files.
+
 import (
 	"encoding/json"
 	"testing"

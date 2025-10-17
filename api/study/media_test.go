@@ -13,7 +13,7 @@ func Test_Media_1(t *testing.T) {
 		"id": "123",
 		"name": "Abc",
 		"tags": ["P1"],
-		"filepath": "/home/bob/studies/cheese-worship/P1 - video.mp4",
+		"filepath": "/home/bob/studies/cheese/P1 - video.mp4",
 		"sections": []
 	}`)
 
@@ -50,7 +50,7 @@ func Test_Media_3(t *testing.T) {
 		"id": "123",
 		"name": "Abc",
 		"tags": ["P1"],
-		"filepath": "/home/bob/studies/cheese-worship/P1 - video.mp4",
+		"filepath": "/home/bob/studies/cheese/P1 - video.mp4",
 		"sections": [
 			{
 				"id": "123",
@@ -83,7 +83,7 @@ func Test_Media_4(t *testing.T) {
 		"id": "123",
 		"name": "Abc",
 		"tags": ["P1"],
-		"filepath": "/home/bob/studies/cheese-worship/P1 - video.mp4",
+		"filepath": "/home/bob/studies/cheese/P1 - video.mp4",
 		"sections": [
 			{
 				"id": "123",
