@@ -20,6 +20,11 @@ const (
 	TypeUnknown          = "unknown"
 )
 
+func hasPropValue[R any](schema JsonObject, name string) bool {
+	_, ok := schema[name].(R)
+	return ok
+}
+
 func getPropValue[R any](schema JsonObject, name string) R {
 	return schema[name].(R)
 }
@@ -69,7 +74,14 @@ func validateSchemaFields(
 	prop JsonObject,
 	propName string,
 ) {
-	for name, subSchema := range getPropValue[SchemaPropFields](schema, "fields") {
+	if !hasPropValue[SchemaPropFields](schema, "fields") {
+		err("%s: Schema with type 'object' must have a 'fields' property", propName)
+		return
+	}
+
+	fields := getPropValue[SchemaPropFields](schema, "fields")
+
+	for name, subSchema := range fields {
 		validateSchema(
 			err,
 			subSchema,
