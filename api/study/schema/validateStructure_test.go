@@ -1,28 +1,10 @@
 package schema
 
 import (
-	"encoding/json"
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
-func parseJson(jsonStr string) JsonObject {
-	data := map[string]any{}
-	e := json.Unmarshal([]byte(jsonStr), &data)
-
-	if e != nil {
-		panic(e)
-	}
-
-	return data
-}
-
-func requireErrors(t *testing.T, actErrors []string, expErrors ...string) {
-	require.ElementsMatch(t, actErrors, expErrors)
-}
-
-func testValidate(schemaName string, schema JsonObject, data JsonValue) []string {
+func testValidateStructure(schemaName string, schema JsonObject, data JsonValue) []string {
 	pErrors, err := NewErrorSlice()
 
 	ValidateStructure(
@@ -46,7 +28,7 @@ func Test_Validate_1(t *testing.T) {
 
 	data := `"Abc"`
 
-	errors := testValidate("test", schema, data)
+	errors := testValidateStructure("test", schema, data)
 	requireErrors(t, errors)
 }
 
@@ -61,7 +43,7 @@ func Test_Validate_2(t *testing.T) {
 
 	data := float64(123)
 
-	errors := testValidate("test", schema, data)
+	errors := testValidateStructure("test", schema, data)
 	requireErrors(t, errors)
 }
 
@@ -76,7 +58,7 @@ func Test_Validate_3(t *testing.T) {
 
 	data := float64(123)
 
-	errors := testValidate("test", schema, data)
+	errors := testValidateStructure("test", schema, data)
 	requireErrors(t, errors,
 		"test: Expected 'string' but got 'number'",
 	)
@@ -96,7 +78,7 @@ func Test_Validate_4(t *testing.T) {
 
 	data := []JsonValue{}
 
-	errors := testValidate("test", schema, data)
+	errors := testValidateStructure("test", schema, data)
 	requireErrors(t, errors)
 }
 
@@ -117,7 +99,7 @@ func Test_Validate_5(t *testing.T) {
 		"Xyz",
 	}
 
-	errors := testValidate("test", schema, data)
+	errors := testValidateStructure("test", schema, data)
 	requireErrors(t, errors)
 }
 
@@ -138,7 +120,7 @@ func Test_Validate_6(t *testing.T) {
 		float64(123),
 	}
 
-	errors := testValidate("test", schema, data)
+	errors := testValidateStructure("test", schema, data)
 	requireErrors(t, errors,
 		"test[1]: Expected 'string' but got 'number'",
 	)
@@ -170,7 +152,7 @@ func Test_Validate_7(t *testing.T) {
 		},
 	}
 
-	errors := testValidate("test", schema, data)
+	errors := testValidateStructure("test", schema, data)
 	requireErrors(t, errors)
 }
 
@@ -186,7 +168,7 @@ func Test_Validate_8(t *testing.T) {
 
 	data := parseJson(`{}`)
 
-	errors := testValidate("test", schema, data)
+	errors := testValidateStructure("test", schema, data)
 	requireErrors(t, errors)
 }
 
@@ -201,7 +183,7 @@ func Test_Validate_9(t *testing.T) {
 
 	data := parseJson(`{}`)
 
-	errors := testValidate("test", schema, data)
+	errors := testValidateStructure("test", schema, data)
 	requireErrors(t, errors,
 		"test: Schema with type 'object' must have a 'fields' property",
 	)
@@ -229,6 +211,6 @@ func Test_Validate_10(t *testing.T) {
 		"age": 37
 	}`)
 
-	errors := testValidate("test", schema, data)
+	errors := testValidateStructure("test", schema, data)
 	requireErrors(t, errors)
 }
