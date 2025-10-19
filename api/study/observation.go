@@ -1,42 +1,46 @@
 package study
 
-var observationSchema = JsonObject{
+import (
+	schema "soothsayer/api/study/schema"
+)
+
+var observationSchema = schema.JsonObject{
 	"type": "object",
-	"fields": SchemaPropFields{
-		"id": JsonObject{
+	"fields": schema.SchemaPropFields{
+		"id": schema.JsonObject{
 			"type": "string",
 		},
-		"tags": JsonObject{
+		"tags": schema.JsonObject{
 			"type": "array",
-			"items": JsonObject{
+			"items": schema.JsonObject{
 				"type": "string",
 			},
 		},
-		"mediaSection": JsonObject{
+		"mediaSection": schema.JsonObject{
 			"type": "string",
 		},
-		"start": JsonObject{
+		"start": schema.JsonObject{
 			"type": "number",
 		},
-		"quote": JsonObject{
+		"quote": schema.JsonObject{
 			"type": "string",
 		},
-		"description": JsonObject{
+		"description": schema.JsonObject{
 			"type": "string",
 		},
-		"codes": JsonObject{
+		"codes": schema.JsonObject{
 			"type": "array",
-			"items": JsonObject{
+			"items": schema.JsonObject{
 				"type": "string",
 			},
 		},
 	},
 }
 
-func ValidateObservation(observation JsonObject) []string {
-	pErrors, err := newErrorSlice()
+func ValidateObservation(observation schema.JsonObject) []string {
+	pErrors, err := schema.NewErrorSlice()
 
-	validateSchema(
+	schema.ValidateStructure(
 		err,
 		observationSchema,
 		observation,

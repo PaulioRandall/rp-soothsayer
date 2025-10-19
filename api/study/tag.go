@@ -1,24 +1,28 @@
 package study
 
-var tagSchema = JsonObject{
+import (
+	schema "soothsayer/api/study/schema"
+)
+
+var tagSchema = schema.JsonObject{
 	"type": "object",
-	"fields": SchemaPropFields{
-		"id": JsonObject{
+	"fields": schema.SchemaPropFields{
+		"id": schema.JsonObject{
 			"type": "string",
 		},
-		"name": JsonObject{
+		"name": schema.JsonObject{
 			"type": "string",
 		},
-		"description": JsonObject{
+		"description": schema.JsonObject{
 			"type": "string",
 		},
 	},
 }
 
-func ValidateTag(tag JsonObject) []string {
-	pErrors, err := newErrorSlice()
+func ValidateTag(tag schema.JsonObject) []string {
+	pErrors, err := schema.NewErrorSlice()
 
-	validateSchema(
+	schema.ValidateStructure(
 		err,
 		tagSchema,
 		tag,

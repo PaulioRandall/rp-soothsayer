@@ -1,4 +1,4 @@
-package study
+package schema
 
 import (
 	"encoding/json"
@@ -23,9 +23,9 @@ func requireErrors(t *testing.T, actErrors []string, expErrors ...string) {
 }
 
 func testValidate(schemaName string, schema JsonObject, data JsonValue) []string {
-	pErrors, err := newErrorSlice()
+	pErrors, err := NewErrorSlice()
 
-	validateSchema(
+	ValidateStructure(
 		err,
 		schema,
 		data,

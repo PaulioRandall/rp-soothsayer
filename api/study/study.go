@@ -1,37 +1,41 @@
 package study
 
-var studySchema = JsonObject{
+import (
+	schema "soothsayer/api/study/schema"
+)
+
+var studySchema = schema.JsonObject{
 	"type": "object",
-	"fields": SchemaPropFields{
-		"name": JsonObject{
+	"fields": schema.SchemaPropFields{
+		"name": schema.JsonObject{
 			"type": "string",
 		},
-		"filepath": JsonObject{
+		"filepath": schema.JsonObject{
 			"type": "string",
 		},
-		"media": JsonObject{
+		"media": schema.JsonObject{
 			"type":  "array",
 			"items": mediaSchema,
 		},
-		"codes": JsonObject{
+		"codes": schema.JsonObject{
 			"type":  "array",
 			"items": codeSchema,
 		},
-		"observations": JsonObject{
+		"observations": schema.JsonObject{
 			"type":  "array",
 			"items": observationSchema,
 		},
-		"tags": JsonObject{
+		"tags": schema.JsonObject{
 			"type":  "array",
 			"items": tagSchema,
 		},
 	},
 }
 
-func ValidateStudy(study JsonObject) []string {
-	pErrors, err := newErrorSlice()
+func ValidateStudy(study schema.JsonObject) []string {
+	pErrors, err := schema.NewErrorSlice()
 
-	validateSchema(
+	schema.ValidateStructure(
 		err,
 		studySchema,
 		study,

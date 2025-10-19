@@ -1,33 +1,37 @@
 package study
 
-var mediaSectionSchema = JsonObject{
+import (
+	schema "soothsayer/api/study/schema"
+)
+
+var mediaSectionSchema = schema.JsonObject{
 	"type": "object",
-	"fields": SchemaPropFields{
-		"id": JsonObject{
+	"fields": schema.SchemaPropFields{
+		"id": schema.JsonObject{
 			"type": "string",
 		},
-		"name": JsonObject{
+		"name": schema.JsonObject{
 			"type": "string",
 		},
-		"tags": JsonObject{
+		"tags": schema.JsonObject{
 			"type": "array",
-			"items": JsonObject{
+			"items": schema.JsonObject{
 				"type": "string",
 			},
 		},
-		"start": JsonObject{
+		"start": schema.JsonObject{
 			"type": "number",
 		},
-		"end": JsonObject{
+		"end": schema.JsonObject{
 			"type": "number",
 		},
 	},
 }
 
-func ValidateMediaSection(mediaSection JsonObject) []string {
-	pErrors, err := newErrorSlice()
+func ValidateMediaSection(mediaSection schema.JsonObject) []string {
+	pErrors, err := schema.NewErrorSlice()
 
-	validateSchema(
+	schema.ValidateStructure(
 		err,
 		mediaSectionSchema,
 		mediaSection,
