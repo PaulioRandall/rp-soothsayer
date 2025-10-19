@@ -25,45 +25,21 @@ func Test_Observation_1(t *testing.T) {
 }
 
 func Test_Observation_2(t *testing.T) {
-	// GIVEN Observation with missing description
-	// WHEN ValidateObservation()
-	// THEN return a single ID type error
+	// GIVEN Observation missing all fields
+	// WHEN Validating media section
+	// THEN returns 7 type errors
 
-	observation := parseJson(`{
-		"id": "o1",
-		"tags": ["P1", "T1"],
-		"mediaSection": "m1.ms1",
-		"start": 0,
-		"quote": "",
-		"codes": ["c1"]
-	}`)
+	observation := parseJson(`{}`)
 
 	errors := ValidateObservation(observation)
 
 	requireErrors(t, errors,
+		"observation.id: Expected 'string' but got 'unknown'",
+		"observation.tags: Expected 'array' but got 'unknown'",
+		"observation.mediaSection: Expected 'string' but got 'unknown'",
+		"observation.start: Expected 'number' but got 'unknown'",
+		"observation.quote: Expected 'string' but got 'unknown'",
 		"observation.description: Expected 'string' but got 'unknown'",
-	)
-}
-
-func Test_Observation_3(t *testing.T) {
-	// GIVEN Observation with bad 'start' and 'quote' types.
-	// WHEN ValidateObservation()
-	// THEN return 2 type errors
-
-	observation := parseJson(`{
-		"id": "o1",
-		"tags": ["P1", "T1"],
-		"mediaSection": "m1.ms2",
-		"start": "123",
-		"quote": 123,
-		"description": "Made mistake",
-		"codes": ["c1"]
-	}`)
-
-	errors := ValidateObservation(observation)
-
-	requireErrors(t, errors,
-		"observation.start: Expected 'number' but got 'string'",
-		"observation.quote: Expected 'string' but got 'number'",
+		"observation.codes: Expected 'array' but got 'unknown'",
 	)
 }

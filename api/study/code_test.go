@@ -6,7 +6,7 @@ import (
 
 func Test_Code_1(t *testing.T) {
 	// GIVEN Valid code
-	// WHEN ValidateCode()
+	// WHEN Code is validated
 	// THEN returns no errors
 
 	code := parseJson(`{
@@ -22,19 +22,18 @@ func Test_Code_1(t *testing.T) {
 }
 
 func Test_Code_2(t *testing.T) {
-	// GIVEN Code with missing description
-	// WHEN ValidateCode()
-	// THEN return 1 type error
+	// GIVEN Code with all missing values
+	// WHEN Code is validated
+	// THEN return 4 type errors
 
-	code := parseJson(`{
-		"id": "123",
-		"name": "Abc",
-		"tags": ["P1"]
-	}`)
+	code := parseJson(`{}`)
 
 	errors := ValidateCode(code)
 
 	requireErrors(t, errors,
+		"code.id: Expected 'string' but got 'unknown'",
+		"code.name: Expected 'string' but got 'unknown'",
+		"code.tags: Expected 'array' but got 'unknown'",
 		"code.description: Expected 'string' but got 'unknown'",
 	)
 }

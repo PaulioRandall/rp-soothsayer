@@ -1,10 +1,5 @@
 package study
 
-// TODO
-// Create tests by creating mock schemas and data to test.
-// Copy from the entity test files.
-// Once done, delete obsolete tests in the entity test files.
-
 import (
 	"encoding/json"
 	"testing"
@@ -126,9 +121,60 @@ func Test_Validate_5(t *testing.T) {
 	requireErrors(t, errors)
 }
 
-// TODO: Test for invalid array data type
+func Test_Validate_6(t *testing.T) {
+	// GIVEN Valid array schema
+	// WHEN invalid data type used in array
+	// THEN return type error
 
-func Test_Validate_10(t *testing.T) {
+	schema := JsonObject{
+		"type": "array",
+		"items": JsonObject{
+			"type": "string",
+		},
+	}
+
+	data := []JsonValue{
+		"Abc",
+		float64(123),
+	}
+
+	errors := testValidate("test", schema, data)
+	requireErrors(t, errors,
+		"test[1]: Expected 'string' but got 'number'",
+	)
+}
+
+func Test_Validate_7(t *testing.T) {
+	// GIVEN Valid array within array schema
+	// WHEN passed valid data
+	// THEN returns no errors
+
+	schema := JsonObject{
+		"type": "array",
+		"items": JsonObject{
+			"type": "array",
+			"items": JsonObject{
+				"type": "string",
+			},
+		},
+	}
+
+	data := []JsonValue{
+		[]JsonValue{
+			"A",
+			"B",
+		},
+		[]JsonValue{
+			"C",
+			"D",
+		},
+	}
+
+	errors := testValidate("test", schema, data)
+	requireErrors(t, errors)
+}
+
+func Test_Validate_8(t *testing.T) {
 	// GIVEN Valid object schema with empty fields
 	// WHEN validateSchema(...)
 	// THEN returns no errors
@@ -144,7 +190,7 @@ func Test_Validate_10(t *testing.T) {
 	requireErrors(t, errors)
 }
 
-func Test_Validate_11(t *testing.T) {
+func Test_Validate_9(t *testing.T) {
 	// GIVEN Valid object schema with no 'fields' member
 	// WHEN validateSchema(...)
 	// THEN return missing field error
@@ -161,7 +207,7 @@ func Test_Validate_11(t *testing.T) {
 	)
 }
 
-func Test_Validate_12(t *testing.T) {
+func Test_Validate_10(t *testing.T) {
 	// GIVEN Valid object schema with fields
 	// WHEN validateSchema(...)
 	// THEN returns no errors

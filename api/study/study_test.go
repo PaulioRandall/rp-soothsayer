@@ -6,7 +6,7 @@ import (
 
 func Test_Study_1(t *testing.T) {
 	// GIVEN Valid new/empty study
-	// WHEN ValidateStudy()
+	// WHEN Validating study
 	// THEN return no errors
 
 	study := parseJson(`{
@@ -24,9 +24,28 @@ func Test_Study_1(t *testing.T) {
 }
 
 func Test_Study_2(t *testing.T) {
-	// GIVEN Valid a populated study
-	// WHEN ValidateStudy()
-	// THEN return no errors
+	// GIVEN Study missing all fields
+	// WHEN Validating study
+	// THEN returns 6 type errors
+
+	study := parseJson(`{}`)
+
+	errors := ValidateStudy(study)
+
+	requireErrors(t, errors,
+		"study.name: Expected 'string' but got 'unknown'",
+		"study.filepath: Expected 'string' but got 'unknown'",
+		"study.media: Expected 'array' but got 'unknown'",
+		"study.codes: Expected 'array' but got 'unknown'",
+		"study.observations: Expected 'array' but got 'unknown'",
+		"study.tags: Expected 'array' but got 'unknown'",
+	)
+}
+
+func Test_Study_3(t *testing.T) {
+	// GIVEN Valid populated study
+	// WHEN Validating study
+	// THEN returns no errors
 
 	study := parseJson(`{
 		"name": "My new study",
