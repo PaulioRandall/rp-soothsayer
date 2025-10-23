@@ -1,95 +1,107 @@
 package schema
 
 import (
-	//"fmt"
+	"fmt"
 	"strings"
 )
 
+type RefChecker = func(path string, v string) bool
+
+func NewRefChecker(data JsonObject) RefChecker {
+	return func(path string, v string) bool {
+		list := findArray(data, path)
+
+		if list == nil {
+			return false
+		}
+
+		if jsonArray, ok := list.(JsonArray); ok {
+			return arrayContains(jsonArray, v)
+		}
+
+		return false
+	}
+}
+
 func ValidateReferences(
 	err Err,
-	data JsonObject,
+	checkRef RefChecker,
 	schema JsonObject,
 	prop JsonValue,
 	propName string,
 ) {
 	if hasPropValue[string](schema, "ref") {
-
+		validateRef(err, checkRef, schema, prop, propName)
+		return
 	}
 
-	/*
-		for fieldName, subSchema := range data["fields"] {
-			fieldPropName := propName + "." + fieldName
-			fieldValue := data[fieldName]
+	propType := getPropValue[string](schema, "type")
 
-			if hasPropValue[string](subSchema, "ref") {
-				findAndCheckRef(err, subSchema, data, fieldValue, fieldPropName)
-				continue
-			}
+	if propType == TypeObject {
+		validateObjectFieldReferences(err, checkRef, schema, prop.(JsonObject), propName)
+		return
+	}
 
-			if getPropValue[string](subSchema, "type") == TypeObject {
-				ValidateReferences(err, subSchema, fieldValue, fieldPropName)
-			}
-		}
-	*/
+	if propType == TypeArray {
+		validateArrayItemReferences(err, checkRef, schema, prop.(JsonArray), propName)
+		return
+	}
 }
 
-/*
-func findAndCheckRef(
-
+func validateRef(
 	err Err,
+	checkRef RefChecker,
 	schema JsonObject,
-	data JsonObject,
 	prop JsonValue,
 	propName string,
-
-	) {
-		if getPropValue[string](schema, "type") != TypeString {
-			err("%s: Reference fields must always be a string", propName)
-			return
-		}
-
-		if determineType(prop) != TypeString {
-			err("%s: Reference fields must always be a string", propName)
-			return
-		}
-
-		ref := getPropValue[string](schema, "ref")
-
-		if !refExists(data, prop.(string), ref) {
-			err("%s: Reference doesn't exist at '%s'", propName, ref)
-		}
+) {
+	if getPropValue[string](schema, "type") != TypeString {
+		err("%s: Properties that reference another may only be strings", propName)
+		return
 	}
 
-func refExists(
-
-	data JsonObject,
-	value string,
-	ref string,
-
-	) bool {
-		path := strings.Split(ref, ".")
-		pArray := getRefArray(data, path...)
-
-		fmt.Printf("pArray: %s", *pArray)
-
-		if pArray == nil {
-			return false
-		}
-
-		array, ok := (*pArray).(JsonArray)
-
-		if !ok {
-			return false
-		}
-
-		return arrayContains(array, value)
+	ref := getPropValue[string](schema, "ref")
+	if !checkRef(ref, prop.(string)) {
+		err("%s: Reference doesn't exist at '%s'", propName, ref)
 	}
-*/
-func findArray(data JsonObject, ref string) JsonValue {
+}
+
+func validateObjectFieldReferences(
+	err Err,
+	checkRef RefChecker,
+	schema JsonObject,
+	obj JsonObject,
+	propName string,
+) {
+	fields := getPropValue[SchemaPropFields](schema, "fields")
+
+	for fieldName, subSchema := range fields {
+		fieldPropName := propName + "." + fieldName
+		fieldValue := obj[fieldName]
+		ValidateReferences(err, checkRef, subSchema, fieldValue, fieldPropName)
+	}
+}
+
+func validateArrayItemReferences(
+	err Err,
+	checkRef RefChecker,
+	schema JsonObject,
+	array JsonArray,
+	propName string,
+) {
+	itemsSchema := getPropValue[JsonObject](schema, "items")
+
+	for i, v := range array {
+		itemPropName := fmt.Sprintf("%s[%d]", propName, i)
+		ValidateReferences(err, checkRef, itemsSchema, v, itemPropName)
+	}
+}
+
+func findArray(data JsonObject, path string) JsonValue {
 	var result JsonValue = JsonValue(data)
-	path := strings.Split(ref, ".")
+	segments := strings.Split(path, ".")
 
-	for _, segment := range path {
+	for _, segment := range segments {
 		obj, isObject := result.(JsonObject)
 		if !isObject {
 			return nil
