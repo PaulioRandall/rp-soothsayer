@@ -2,90 +2,7 @@ package schema
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
-
-func Test_findArray_1(t *testing.T) {
-	// GIVEN Data with array at top level
-	// WHEN searching for that array
-	// THEN returns it
-
-	data := parseJson(`{
-		"ids": ["abc", "123"]
-	}`)
-
-	act := findArray(data, "ids")
-	exp := []JsonValue{"abc", "123"}
-	require.EqualValues(t, exp, act)
-}
-
-func Test_findArray_2(t *testing.T) {
-	// GIVEN Data with array not at top level
-	// WHEN searching for that array
-	// THEN returns it
-
-	data := parseJson(`{
-		"things": {
-			"stuff": {
-				"ids": ["abc", "123"]
-			}
-		}
-	}`)
-
-	act := findArray(data, "things.stuff.ids")
-	exp := []JsonValue{"abc", "123"}
-	require.EqualValues(t, exp, act)
-}
-
-func Test_findArray_3(t *testing.T) {
-	// GIVEN Search ref not matching data structure
-	// WHEN searching for referenced array
-	// THEN returns nil
-
-	data := parseJson(`{
-		"things": {
-			"thongs": {
-				"ids": ["abc", "123"]
-			}
-		}
-	}`)
-
-	act := findArray(data, "things.stuff.ids")
-	require.EqualValues(t, nil, act)
-}
-
-func Test_arrayContains_1(t *testing.T) {
-	// GIVEN array contains "c3"
-	// WHEN checking if "c3" is contained in array
-	// THEN returns true
-
-	data := []JsonValue{
-		"a1",
-		"b2",
-		"c3",
-		"d4",
-	}
-
-	contains := arrayContains(data, "c3")
-	require.EqualValues(t, true, contains)
-}
-
-func Test_arrayContains_2(t *testing.T) {
-	// GIVEN array contains "c3"
-	// WHEN checking if "e5" is contained in array
-	// THEN returns false
-
-	data := []JsonValue{
-		"a1",
-		"b2",
-		"c3",
-		"d4",
-	}
-
-	contains := arrayContains(data, "e5")
-	require.EqualValues(t, false, contains)
-}
 
 func testValidateReferences(schemaName string, schema JsonObject, data JsonValue) []string {
 	pErrors, err := NewErrorSlice()
@@ -285,6 +202,61 @@ func Test_ValidateReferences_5(t *testing.T) {
 			"123",
 			"456",
 			"789"
+		]
+	}`)
+
+	errors := testValidateReferences("test", schema, data)
+	requireErrors(t, errors)
+}
+
+func Test_ValidateReferences_6(t *testing.T) {
+	// GIVEN an object array used as a target for references
+	// WHEN validating a reference exists within the array
+	// THEN returns no errors
+
+	schema := JsonObject{
+		"type": "object",
+		"fields": SchemaPropFields{
+			"thingId1": JsonObject{
+				"type": "string",
+				"ref":  "things@id",
+			},
+			"thingId2": JsonObject{
+				"type": "string",
+				"ref":  "things@id",
+			},
+			"thingId3": JsonObject{
+				"type": "string",
+				"ref":  "things@id",
+			},
+			"things": JsonObject{
+				"type": "array",
+				"items": JsonObject{
+					"type": "object",
+					"fields": SchemaPropFields{
+						"id": JsonObject{
+							"type": "string",
+						},
+					},
+				},
+			},
+		},
+	}
+
+	data := parseJson(`{
+		"thingId1": "123",
+		"thingId2": "456",
+		"thingId3": "789",
+		"things": [
+			{
+				"id": "123"
+			},
+			{
+				"id": "456"
+			},
+			{
+				"id": "789"
+			}
 		]
 	}`)
 

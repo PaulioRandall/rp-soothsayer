@@ -2,24 +2,13 @@ package schema
 
 import (
 	"fmt"
-	"strings"
 )
 
 type RefChecker = func(path string, v string) bool
 
 func NewRefChecker(data JsonObject) RefChecker {
 	return func(path string, v string) bool {
-		list := findArray(data, path)
-
-		if list == nil {
-			return false
-		}
-
-		if jsonArray, ok := list.(JsonArray); ok {
-			return arrayContains(jsonArray, v)
-		}
-
-		return false
+		return makeReference(path).existsWithin(data, v)
 	}
 }
 
@@ -95,33 +84,4 @@ func validateArrayItemReferences(
 		itemPropName := fmt.Sprintf("%s[%d]", propName, i)
 		ValidateReferences(err, checkRef, itemsSchema, v, itemPropName)
 	}
-}
-
-func findArray(data JsonObject, path string) JsonValue {
-	var result JsonValue = JsonValue(data)
-	segments := strings.Split(path, ".")
-
-	for _, segment := range segments {
-		obj, isObject := result.(JsonObject)
-		if !isObject {
-			return nil
-		}
-
-		if v, ok := obj[segment]; ok {
-			result = v
-		} else {
-			return nil
-		}
-	}
-
-	return result
-}
-
-func arrayContains(haystack JsonArray, needle string) bool {
-	for _, v := range haystack {
-		if v == needle {
-			return true
-		}
-	}
-	return false
 }
