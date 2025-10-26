@@ -16,9 +16,6 @@ var observationSchema = schema.JsonObject{
 				"type": "string",
 			},
 		},
-		"mediaSection": schema.JsonObject{
-			"type": "string",
-		},
 		"start": schema.JsonObject{
 			"type": "number",
 		},

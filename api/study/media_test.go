@@ -20,14 +20,40 @@ func Test_Media_1(t *testing.T) {
 				"name": "Abc",
 				"tags": ["P1", "T1"],
 				"start": 0,
-				"end": 100
+				"end": 200
 			},
 			{
 				"id": "456",
 				"name": "Xyz",
 				"tags": ["P1", "T2"],
-				"start": 100,
-				"end": 200
+				"start": 200,
+				"end": 400
+			}
+		],
+		"observations": [
+			{
+				"id": "o1",
+				"tags": ["P1", "T1"],
+				"start": 33,
+				"quote": "",
+				"description": "Misclicked: hit 'clear' instead of 'submit'",
+				"codes": ["c3"]
+			},
+			{
+				"id": "o2",
+				"tags": ["P1", "T1"],
+				"start": 166,
+				"quote": "I really like cheese.",
+				"description": "Big grin while expressing love for cheese",
+				"codes": []
+			},
+			{
+				"id": "o3",
+				"tags": ["P2", "T2"],
+				"start": 222,
+				"quote": "I don't like the colour of the background, it's not cheesy enough.",
+				"description": "",
+				"codes": ["c4"]
 			}
 		]
 	}`)
@@ -52,6 +78,7 @@ func Test_Media_2(t *testing.T) {
 		"media.tags: Expected 'array' but got 'unknown'",
 		"media.filepath: Expected 'string' but got 'unknown'",
 		"media.sections: Expected 'array' but got 'unknown'",
+		"media.observations: Expected 'array' but got 'unknown'",
 	)
 }
 
@@ -67,6 +94,9 @@ func Test_Media_3(t *testing.T) {
 		"filepath": "/home/bob/studies/cheese/P1 - video.mp4",
 		"sections": [
 			{}
+		],
+		"observations": [
+			{}
 		]
 	}`)
 
@@ -78,5 +108,11 @@ func Test_Media_3(t *testing.T) {
 		"media.sections[0].tags: Expected 'array' but got 'unknown'",
 		"media.sections[0].start: Expected 'number' but got 'unknown'",
 		"media.sections[0].end: Expected 'number' but got 'unknown'",
+		"media.observations[0].id: Expected 'string' but got 'unknown'",
+		"media.observations[0].tags: Expected 'array' but got 'unknown'",
+		"media.observations[0].start: Expected 'number' but got 'unknown'",
+		"media.observations[0].quote: Expected 'string' but got 'unknown'",
+		"media.observations[0].description: Expected 'string' but got 'unknown'",
+		"media.observations[0].codes: Expected 'array' but got 'unknown'",
 	)
 }

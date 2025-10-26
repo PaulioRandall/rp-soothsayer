@@ -21,10 +21,6 @@ var studySchema = schema.JsonObject{
 			"type":  "array",
 			"items": codeSchema,
 		},
-		"observations": schema.JsonObject{
-			"type":  "array",
-			"items": observationSchema,
-		},
 		"tags": schema.JsonObject{
 			"type":  "array",
 			"items": tagSchema,

@@ -12,7 +12,6 @@ func Test_Observation_1(t *testing.T) {
 	observation := parseJson(`{
 		"id": "o1",
 		"tags": ["P1", "T1"],
-		"mediaSection": "m1.ms2",
 		"start": 123,
 		"quote": "Oops!",
 		"description": "Made mistake",
@@ -36,7 +35,6 @@ func Test_Observation_2(t *testing.T) {
 	requireErrors(t, errors,
 		"observation.id: Expected 'string' but got 'unknown'",
 		"observation.tags: Expected 'array' but got 'unknown'",
-		"observation.mediaSection: Expected 'string' but got 'unknown'",
 		"observation.start: Expected 'number' but got 'unknown'",
 		"observation.quote: Expected 'string' but got 'unknown'",
 		"observation.description: Expected 'string' but got 'unknown'",

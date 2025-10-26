@@ -34,7 +34,6 @@ func Test_Study_1(t *testing.T) {
 		"filepath": "/home/bob/studies/cheese",
 		"media": [],
 		"codes": [],
-		"observations": [],
 		"tags": []
 	}`)
 
@@ -57,7 +56,6 @@ func Test_Study_2(t *testing.T) {
 		"study.filepath: Expected 'string' but got 'unknown'",
 		"study.media: Expected 'array' but got 'unknown'",
 		"study.codes: Expected 'array' but got 'unknown'",
-		"study.observations: Expected 'array' but got 'unknown'",
 		"study.tags: Expected 'array' but got 'unknown'",
 	)
 }
@@ -91,6 +89,32 @@ func Test_Study_3(t *testing.T) {
 						"start": 100,
 						"end": 200
 					}
+				],
+				"observations": [
+					{
+						"id": "o1",
+						"tags": ["P1", "T1"],
+						"start": 33,
+						"quote": "",
+						"description": "Misclicked: hit 'clear' instead of 'submit'",
+						"codes": ["c3"]
+					},
+					{
+						"id": "o2",
+						"tags": ["P1", "T1"],
+						"start": 166,
+						"quote": "I really like cheese.",
+						"description": "Big grin while expressing love for cheese",
+						"codes": []
+					},
+					{
+						"id": "o3",
+						"tags": ["P2", "T2"],
+						"start": 222,
+						"quote": "I don't like the colour of the background, it's not cheesy enough.",
+						"description": "",
+						"codes": ["c4"]
+					}
 				]
 			},
 			{
@@ -112,6 +136,24 @@ func Test_Study_3(t *testing.T) {
 						"tags": ["P2", "T2"],
 						"start": 150,
 						"end": 300
+					}
+				],
+				"observations": [
+					{
+						"id": "m2.o1",
+						"tags": ["P2", "T1"],
+						"start": 33,
+						"quote": "",
+						"description": "Misclicked: hit 'clear' instead of 'submit'",
+						"codes": ["c3"]
+					},
+					{
+						"id": "m2.o2",
+						"tags": ["P2", "T2"],
+						"start": 166,
+						"quote": "I really like cheese.",
+						"description": "Big grin while expressing love for cheese",
+						"codes": []
 					}
 				]
 			}
@@ -140,35 +182,6 @@ func Test_Study_3(t *testing.T) {
 				"name": "Dislike colour scheme",
 				"tags": [],
 				"description": "Dislikes some aspect of colour scheme"
-			}
-		],
-		"observations": [
-			{
-				"id": "o1",
-				"tags": ["P1", "T1"],
-				"mediaSection": "m1.ms1",
-				"start": 33,
-				"quote": "",
-				"description": "Misclicked: hit 'clear' instead of 'submit'",
-				"codes": ["c3"]
-			},
-			{
-				"id": "o2",
-				"tags": ["P1", "T1"],
-				"mediaSection": "m1.ms2",
-				"start": 166,
-				"quote": "I really like cheese.",
-				"description": "Big grin while expressing love for cheese",
-				"codes": []
-			},
-			{
-				"id": "o3",
-				"tags": ["P2", "T2"],
-				"mediaSection": "m2.ms2",
-				"start": 222,
-				"quote": "I don't like the colour of the background, it's not cheesy enough.",
-				"description": "",
-				"codes": ["c4"]
 			}
 		],
 		"tags": [

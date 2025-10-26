@@ -26,6 +26,10 @@ var mediaSchema = schema.JsonObject{
 			"type":  "array",
 			"items": mediaSectionSchema,
 		},
+		"observations": schema.JsonObject{
+			"type":  "array",
+			"items": observationSchema,
+		},
 	},
 }
 
