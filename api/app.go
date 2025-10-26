@@ -16,6 +16,6 @@ func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) LoadMedia(path string) {
-	// Find file
+func (a *App) ReadDir(path string) []DirInfo {
+	return ReadDir(path)
 }
