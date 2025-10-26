@@ -1,3 +1,8 @@
+:root {
+	--color-grey-3: #808080;
+	--color-grey-2: #c0c0c0;
+}
+
 *,
 ::before,
 ::after {
