@@ -5,9 +5,9 @@
 
 	let view = $state(views['landing'])
 
-	setContext("gotoView", (viewName) => {
-		if (typeof viewName !== "string") {
-			throw new Error("View name must be a string")
+	setContext('gotoView', (viewName) => {
+		if (typeof viewName !== 'string') {
+			throw new Error('View name must be a string')
 		}
 
 		const name = viewName.toLowerCase()

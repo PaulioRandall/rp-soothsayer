@@ -1,4 +1,1 @@
-
-<main>
-	Study Home View
-</main>
+<main>Study Home View</main>

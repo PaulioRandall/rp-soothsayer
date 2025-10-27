@@ -5,7 +5,7 @@
 
 	let { children, ...rest } = $props()
 
-	const gotoFileBrowserView = () => gotoView("FileBrowser")
+	const gotoFileBrowserView = () => gotoView('FileBrowser')
 </script>
 
 <button onclick={gotoFileBrowserView} {...rest}>

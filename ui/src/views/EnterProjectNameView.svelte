@@ -1,4 +1,1 @@
-
-<main>
-	Enter Project Name View
-</main>
+<main>Enter Project Name View</main>

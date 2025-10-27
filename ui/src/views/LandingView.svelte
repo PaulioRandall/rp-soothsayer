@@ -3,9 +3,7 @@
 </script>
 
 <main>
-	<Button>
-		Create or Open Project
-	</Button>
+	<Button>Create or Open Project</Button>
 </main>
 
 <style>
