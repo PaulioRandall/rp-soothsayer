@@ -1,6 +1,5 @@
 export namespace api {
 	export class DirInfo {
-		ParentPath: string
 		DirName: string
 		IsProjectDir: boolean
 
@@ -10,7 +9,6 @@ export namespace api {
 
 		constructor(source: any = {}) {
 			if ('string' === typeof source) source = JSON.parse(source)
-			this.ParentPath = source['ParentPath']
 			this.DirName = source['DirName']
 			this.IsProjectDir = source['IsProjectDir']
 		}

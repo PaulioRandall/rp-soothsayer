@@ -14,12 +14,18 @@
 
 <style>
 	button {
-		padding: 1rem;
+		padding: 0.25rem 0.5rem;
 
-		background: var(--color-grey-2);
+		background: var(--color-grey-1);
 		border: 2px solid var(--color-grey-3);
 		border-radius: 8px;
 
+		font-weight: 500;
+
 		cursor: pointer;
+	}
+
+	button:hover {
+		background: #dddddd;
 	}
 </style>

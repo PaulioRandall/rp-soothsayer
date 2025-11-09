@@ -1,7 +1,6 @@
 package api
 
 type DirInfo struct {
-	ParentPath   string
 	DirName      string
 	IsProjectDir bool
 }

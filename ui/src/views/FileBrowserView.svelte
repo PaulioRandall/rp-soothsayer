@@ -1,61 +1,50 @@
-<script context="module">
-	import Two from 'two.js'
-
-	function createTwoInstance(container) {
-		if (!container) {
-			return null
-		}
-
-		return new Two({
-			fullscreen: true,
-			autostart: true,
-		}).appendTo(container)
-	}
-
-	function addContentToTwoInstance(two, dirFiles) {
-		if (!two || !dirFiles) {
-			return
-		}
-
-		const size = 50
-		const radius = size / 2
-		const gap = 50
-		const childY = size + gap + radius
-
-		two.makeRectangle(two.width / 2, radius, size, size)
-		two.makeText('Parent', two.width / 2, radius)
-
-		for (let i = 0; i < dirFiles.length; i++) {
-			const dir = dirFiles[i]
-			const x = i * (gap + size) + radius
-			two.makeRectangle(x, childY, size, size)
-			two.makeText(dir.DirName, x, childY)
-		}
-	}
-</script>
-
 <script>
-	//import { ReadDir } from '../../wailsjs/go/api/App'
-	import MockDirInfoData from './MockDirInfoData'
+	import { AbsPath, ReadDir } from '../../wailsjs/go/api/App'
+	import { Button } from '../lib'
 
-	let dirFiles = $state(MockDirInfoData)
-	let dirFileCount = $derived(dirFiles.length)
+	let dirFiles = $state([])
+	let dirPath = $state('./')
+	let absPath = $state('')
 
-	let vizContainer = $state()
-	let twoInstance = null
-
-	$effect(() => {
-		twoInstance = createTwoInstance(vizContainer)
-		addContentToTwoInstance(twoInstance, dirFiles)
+	$effect(async () => {
+		absPath = await AbsPath(dirPath)
+		dirFiles = await ReadDir(absPath)
 	})
-
-	//dirFiles = ReadDir(".")
-	//console.log(dirFiles)
 </script>
 
 <main>
-	<div bind:this={vizContainer} class="file-browser-viz-container">
-		<!-- Inner HTML managed by Two.js -->
+	<div class="file-browser-view">
+		<div class="dir-info">
+			<span>
+				<Button>Back</Button>
+			</span>
+			<span class="dir-path">
+				{absPath}
+			</span>
+			<span>
+				<Button>Create Project Here</Button>
+			</span>
+		</div>
+		<div class="dir-files">
+			<!-- TODO render list of folders in the current dir path -->
+			{#each dirFiles as { ParentPath, DirName, IsProjectDir }}
+				<dir class="dir-file">
+					<span class="dir-file-name">
+						{#if IsProjectDir}
+							*
+						{/if}
+						/{DirName}
+					</span>
+					<span>
+						{#if IsProjectDir}
+							<Button>Open Project</Button>
+						{:else}
+							<Button>➜</Button>
+						{/if}
+					</span>
+				</dir>
+			{/each}
+		</div>
 	</div>
 </main>
 
@@ -65,10 +54,50 @@
 		height: 100%;
 	}
 
-	.file-browser-viz-container {
+	.file-browser-view {
 		width: 100%;
-		height: 100%;
 		max-width: 100%;
-		max-height: 100%;
+		min-height: 100%;
+	}
+
+	.dir-info {
+		display: flex;
+
+		padding: 1rem;
+
+		border-bottom: 2px solid black;
+	}
+
+	.dir-path {
+		flex: 1 1 auto;
+
+		display: flex;
+		align-items: center;
+		padding: 0 1rem;
+
+		font-size: 120%;
+	}
+
+	.dir-files {
+		display: flex;
+		flex-direction: column;
+
+		overflow-y: auto;
+	}
+
+	.dir-file {
+		display: flex;
+		justify-content: space-between;
+
+		padding: 0.25rem 1rem;
+
+		border: 1px solid lightgrey;
+
+		margin: 0;
+	}
+
+	.dir-file-name {
+		display: flex;
+		align-items: center;
 	}
 </style>
