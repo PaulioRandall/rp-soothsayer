@@ -1,6 +1,7 @@
 export namespace api {
 	export class DirInfo {
 		DirName: string
+		DirPath: string
 		IsProjectDir: boolean
 
 		static createFrom(source: any = {}) {
@@ -10,6 +11,7 @@ export namespace api {
 		constructor(source: any = {}) {
 			if ('string' === typeof source) source = JSON.parse(source)
 			this.DirName = source['DirName']
+			this.DirPath = source['DirPath']
 			this.IsProjectDir = source['IsProjectDir']
 		}
 	}

@@ -6,6 +6,10 @@ export function AbsPath(arg1) {
 	return window['go']['api']['App']['AbsPath'](arg1)
 }
 
+export function ParentPath(arg1) {
+	return window['go']['api']['App']['ParentPath'](arg1)
+}
+
 export function ReadDir(arg1) {
 	return window['go']['api']['App']['ReadDir'](arg1)
 }

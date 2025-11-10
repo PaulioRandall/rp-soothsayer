@@ -1,22 +1,26 @@
 <script>
-	import { AbsPath, ReadDir } from '../../wailsjs/go/api/App'
+	import { ParentPath, AbsPath, ReadDir } from '../../wailsjs/go/api/App'
 	import { Button } from '../lib'
 
 	let dirFiles = $state([])
-	let dirPath = $state('./')
 	let absPath = $state('')
+	let backPath = $state('')
+	let dirPath = $state('.')
 
 	$effect(async () => {
 		absPath = await AbsPath(dirPath)
+		backPath = await ParentPath(absPath)
 		dirFiles = await ReadDir(absPath)
 	})
+
+	// NEXT: "Create Project Here" functionality
 </script>
 
 <main>
 	<div class="file-browser-view">
 		<div class="dir-info">
 			<span>
-				<Button>Back</Button>
+				<Button onclick={() => (dirPath = backPath)}>Back</Button>
 			</span>
 			<span class="dir-path">
 				{absPath}
@@ -26,8 +30,7 @@
 			</span>
 		</div>
 		<div class="dir-files">
-			<!-- TODO render list of folders in the current dir path -->
-			{#each dirFiles as { ParentPath, DirName, IsProjectDir }}
+			{#each dirFiles as { DirPath, DirName, IsProjectDir }}
 				<dir class="dir-file">
 					<span class="dir-file-name">
 						{#if IsProjectDir}
@@ -39,7 +42,7 @@
 						{#if IsProjectDir}
 							<Button>Open Project</Button>
 						{:else}
-							<Button>➜</Button>
+							<Button onclick={() => (dirPath = DirPath)}>➜</Button>
 						{/if}
 					</span>
 				</dir>

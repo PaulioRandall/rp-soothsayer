@@ -20,10 +20,14 @@ func (a *App) Startup(ctx context.Context) {
 
 // File browser functions
 
+func (a *App) ParentPath(path string) string {
+	return filepath.Dir(path)
+}
+
 func (a *App) AbsPath(path string) (string, error) {
 	return filepath.Abs(path)
 }
 
-func (a *App) ReadDir(path string) []DirInfo {
+func (a *App) ReadDir(path string) ([]DirInfo, error) {
 	return ReadDir(path)
 }

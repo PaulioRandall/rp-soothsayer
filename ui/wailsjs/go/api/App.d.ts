@@ -4,4 +4,6 @@ import { api } from '../models'
 
 export function AbsPath(arg1: string): Promise<string>
 
+export function ParentPath(arg1: string): Promise<string>
+
 export function ReadDir(arg1: string): Promise<Array<api.DirInfo>>
