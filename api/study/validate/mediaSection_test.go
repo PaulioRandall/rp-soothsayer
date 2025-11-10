@@ -1,4 +1,4 @@
-package study
+package validate
 
 import (
 	"testing"

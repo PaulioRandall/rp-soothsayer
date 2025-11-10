@@ -60,7 +60,11 @@
 	.file-browser-view {
 		width: 100%;
 		max-width: 100%;
-		min-height: 100%;
+		height: 100%;
+		max-height: 100%;
+
+		display: flex;
+		flex-direction: column;
 	}
 
 	.dir-info {
@@ -82,10 +86,8 @@
 	}
 
 	.dir-files {
-		display: flex;
-		flex-direction: column;
-
-		overflow-y: auto;
+		flex: 1 1 auto;
+		overflow: auto;
 	}
 
 	.dir-file {
