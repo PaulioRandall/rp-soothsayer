@@ -17,7 +17,7 @@ func Test_Study_1(t *testing.T) {
 		"tags": []
 	}`)
 
-	errors := ValidateStudy(study)
+	errors := Validate(studySchema, study, "study")
 
 	requireErrors(t, errors)
 }
@@ -29,7 +29,7 @@ func Test_Study_2(t *testing.T) {
 
 	study := parseJson(`{}`)
 
-	errors := ValidateStudy(study)
+	errors := Validate(studySchema, study, "study")
 
 	requireErrors(t, errors,
 		"study.name: Expected 'string' but got 'unknown'",
@@ -193,7 +193,7 @@ func Test_Study_3(t *testing.T) {
 		]
 	}`)
 
-	errors := ValidateStudy(study)
+	errors := Validate(studySchema, study, "study")
 
 	requireErrors(t, errors)
 }

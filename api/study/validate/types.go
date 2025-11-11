@@ -1,9 +1,5 @@
 package validate
 
-import (
-	"fmt"
-)
-
 type JsonType = string
 type JsonValue = any
 type JsonObject = map[string]JsonValue
@@ -19,17 +15,6 @@ const (
 	TypeNumber           = "number"
 	TypeUnknown          = "unknown"
 )
-
-func NewErrorSlice() (*[]string, Err) {
-	errors := []string{}
-
-	err := func(msg string, args ...any) {
-		msg = fmt.Sprintf(msg, args...)
-		errors = append(errors, msg)
-	}
-
-	return &errors, err
-}
 
 func determineType(prop JsonValue) JsonType {
 	switch prop.(type) {

@@ -1,86 +1,79 @@
 package validate
 
 import (
-	"strings"
+	"fmt"
 )
 
-type reference struct {
-	path     string
-	segments []string
-	field    string
+func validateReferences(
+	err Err,
+	checkRef RefChecker,
+	schema JsonObject,
+	prop JsonValue,
+	propName string,
+) {
+	if hasPropValue[string](schema, "ref") {
+		validateRef(err, checkRef, schema, prop, propName)
+		return
+	}
+
+	propType := getPropValue[string](schema, "type")
+
+	if propType == TypeObject {
+		validateObjectFieldReferences(err, checkRef, schema, prop.(JsonObject), propName)
+		return
+	}
+
+	if propType == TypeArray {
+		validateArrayItemReferences(err, checkRef, schema, prop.(JsonArray), propName)
+		return
+	}
 }
 
-func makeReference(path string) reference {
-	parts := strings.Split(path, "@")
-	field := ""
-
-	if len(parts) > 1 {
-		field = parts[1]
+func validateRef(
+	err Err,
+	checkRef RefChecker,
+	schema JsonObject,
+	prop JsonValue,
+	propName string,
+) {
+	if getPropValue[string](schema, "type") != TypeString {
+		err("%s: Properties that reference another may only be strings", propName)
+		return
 	}
 
-	segments := strings.Split(parts[0], ".")
-
-	return reference{
-		path:     path,
-		segments: segments,
-		field:    field,
+	ref := getPropValue[string](schema, "ref")
+	if !checkRef(ref, prop.(string)) {
+		err("%s: Reference doesn't exist at '%s'", propName, ref)
 	}
 }
 
-func (ref reference) existsWithin(data JsonObject, v string) bool {
-	refValue := ref.findArray(data)
+func validateObjectFieldReferences(
+	err Err,
+	checkRef RefChecker,
+	schema JsonObject,
+	obj JsonObject,
+	propName string,
+) {
+	fields := getPropValue[SchemaPropFields](schema, "fields")
 
-	if refValue == nil {
-		return false
+	for fieldName, subSchema := range fields {
+		fieldPropName := propName + "." + fieldName
+		fieldValue := obj[fieldName]
+		validateReferences(err, checkRef, subSchema, fieldValue, fieldPropName)
 	}
-
-	array, ok := refValue.(JsonArray)
-
-	if !ok {
-		return false
-	}
-
-	if ref.field != "" {
-		return objectArrayContains(array, ref.field, v)
-	}
-
-	return arrayContains(array, v)
 }
 
-func (ref reference) findArray(data JsonObject) JsonValue {
-	var result JsonValue = JsonValue(data)
+func validateArrayItemReferences(
+	err Err,
+	checkRef RefChecker,
+	schema JsonObject,
+	array JsonArray,
+	propName string,
+) {
+	itemsSchema := getPropValue[JsonObject](schema, "items")
 
-	for _, segment := range ref.segments {
-		obj, isObject := result.(JsonObject)
-		if !isObject {
-			return nil
-		}
-
-		if v, ok := obj[segment]; ok {
-			result = v
-		} else {
-			return nil
-		}
+	for i, v := range array {
+		itemPropName := fmt.Sprintf("%s[%d]", propName, i)
+		validateReferences(err, checkRef, itemsSchema, v, itemPropName)
 	}
-
-	return result
-}
-
-func objectArrayContains(haystack JsonArray, field string, needle string) bool {
-	for _, item := range haystack {
-		itemObj, ok := item.(JsonObject)
-		if ok && itemObj[field] == needle {
-			return true
-		}
-	}
-	return false
-}
-
-func arrayContains(haystack JsonArray, needle string) bool {
-	for _, item := range haystack {
-		if item == needle {
-			return true
-		}
-	}
-	return false
 }
