@@ -6,7 +6,7 @@ import (
 
 func validateReferences(
 	err Err,
-	checkRef RefChecker,
+	checkRef refChecker,
 	schema JsonObject,
 	prop JsonValue,
 	propName string,
@@ -31,7 +31,7 @@ func validateReferences(
 
 func validateRef(
 	err Err,
-	checkRef RefChecker,
+	checkRef refChecker,
 	schema JsonObject,
 	prop JsonValue,
 	propName string,
@@ -49,7 +49,7 @@ func validateRef(
 
 func validateObjectFieldReferences(
 	err Err,
-	checkRef RefChecker,
+	checkRef refChecker,
 	schema JsonObject,
 	obj JsonObject,
 	propName string,
@@ -65,7 +65,7 @@ func validateObjectFieldReferences(
 
 func validateArrayItemReferences(
 	err Err,
-	checkRef RefChecker,
+	checkRef refChecker,
 	schema JsonObject,
 	array JsonArray,
 	propName string,

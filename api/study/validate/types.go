@@ -1,9 +1,11 @@
 package validate
 
-type JsonType = string
+// TODO: Much of this can be packag private.
+
 type JsonValue = any
 type JsonObject = map[string]JsonValue
 type JsonArray = []JsonValue
+type JsonType = string
 
 type Err = func(msg string, args ...any)
 type SchemaPropFields = map[string]JsonObject

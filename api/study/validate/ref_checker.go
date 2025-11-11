@@ -4,9 +4,9 @@ import (
 	"strings"
 )
 
-type RefChecker = func(path string, v string) bool
+type refChecker = func(path string, v string) bool
 
-func NewRefChecker(data JsonObject) RefChecker {
+func newRefChecker(data JsonObject) refChecker {
 	return func(path string, v string) bool {
 		return makeReference(path).existsWithin(data, v)
 	}

@@ -5,7 +5,7 @@ import (
 )
 
 func testValidateStructure(schema JsonObject, data JsonValue, schemaName string) []string {
-	pErrors, err := NewErrorSlice()
+	pErrors, err := newErrorSlice()
 
 	validateStructure(
 		err,
@@ -43,7 +43,7 @@ func Test_Validate_2(t *testing.T) {
 
 	data := float64(123)
 
-	errors := Validate(schema, data, "test")
+	errors := testValidateStructure(schema, data, "test")
 	requireErrors(t, errors)
 }
 
@@ -58,7 +58,7 @@ func Test_Validate_3(t *testing.T) {
 
 	data := float64(123)
 
-	errors := Validate(schema, data, "test")
+	errors := testValidateStructure(schema, data, "test")
 	requireErrors(t, errors,
 		"test: Expected 'string' but got 'number'",
 	)
@@ -78,7 +78,7 @@ func Test_Validate_4(t *testing.T) {
 
 	data := []JsonValue{}
 
-	errors := Validate(schema, data, "test")
+	errors := testValidateStructure(schema, data, "test")
 	requireErrors(t, errors)
 }
 
@@ -99,7 +99,7 @@ func Test_Validate_5(t *testing.T) {
 		"Xyz",
 	}
 
-	errors := Validate(schema, data, "test")
+	errors := testValidateStructure(schema, data, "test")
 	requireErrors(t, errors)
 }
 
@@ -120,7 +120,7 @@ func Test_Validate_6(t *testing.T) {
 		float64(123),
 	}
 
-	errors := Validate(schema, data, "test")
+	errors := testValidateStructure(schema, data, "test")
 	requireErrors(t, errors,
 		"test[1]: Expected 'string' but got 'number'",
 	)
@@ -152,7 +152,7 @@ func Test_Validate_7(t *testing.T) {
 		},
 	}
 
-	errors := Validate(schema, data, "test")
+	errors := testValidateStructure(schema, data, "test")
 	requireErrors(t, errors)
 }
 
@@ -168,7 +168,7 @@ func Test_Validate_8(t *testing.T) {
 
 	data := parseJson(`{}`)
 
-	errors := Validate(schema, data, "test")
+	errors := testValidateStructure(schema, data, "test")
 	requireErrors(t, errors)
 }
 
@@ -183,7 +183,7 @@ func Test_Validate_9(t *testing.T) {
 
 	data := parseJson(`{}`)
 
-	errors := Validate(schema, data, "test")
+	errors := testValidateStructure(schema, data, "test")
 	requireErrors(t, errors,
 		"test: Schema with type 'object' must have a 'fields' property",
 	)
@@ -211,6 +211,6 @@ func Test_Validate_10(t *testing.T) {
 		"age": 37
 	}`)
 
-	errors := Validate(schema, data, "test")
+	errors := testValidateStructure(schema, data, "test")
 	requireErrors(t, errors)
 }

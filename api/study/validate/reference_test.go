@@ -5,8 +5,8 @@ import (
 )
 
 func testValidateReferences(schema JsonObject, data JsonValue, schemaName string) []string {
-	pErrors, err := NewErrorSlice()
-	checkRef := NewRefChecker(data.(JsonObject))
+	pErrors, err := newErrorSlice()
+	checkRef := newRefChecker(data.(JsonObject))
 
 	validateReferences(
 		err,
