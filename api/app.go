@@ -4,7 +4,6 @@ import (
 	"context"
 	"path/filepath"
 
-	//"soothsayer/api/study/validate"
 	"soothsayer/api/study"
 )
 
@@ -33,6 +32,17 @@ func (a *App) AbsPath(path string) (string, error) {
 
 func (a *App) ReadDir(path string) ([]DirInfo, error) {
 	return ReadDir(path)
+}
+
+func (a *App) CreateStudy(name string, path string) error {
+	study, e := study.CreateAndSaveNewStudy(name, path)
+
+	if e != nil {
+		return e
+	}
+
+	a.study = study
+	return nil
 }
 
 func (a *App) LoadStudy(path string) (*study.Study, error) {

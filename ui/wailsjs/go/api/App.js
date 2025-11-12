@@ -6,6 +6,10 @@ export function AbsPath(arg1) {
 	return window['go']['api']['App']['AbsPath'](arg1)
 }
 
+export function CreateStudy(arg1, arg2) {
+	return window['go']['api']['App']['CreateStudy'](arg1, arg2)
+}
+
 export function LoadStudy(arg1) {
 	return window['go']['api']['App']['LoadStudy'](arg1)
 }

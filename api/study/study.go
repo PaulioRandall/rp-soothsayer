@@ -1,5 +1,32 @@
 package study
 
+import (
+	"encoding/json"
+	"os"
+)
+
+func CreateAndSaveNewStudy(name string, path string) (*Study, error) {
+	study := Study{
+		Name:     name,
+		Filepath: path,
+		Media:    []Media{},
+		Codes:    []Code{},
+		Tags:     []Tag{},
+	}
+
+	data, e := json.Marshal(study)
+	if e != nil {
+		return nil, e
+	}
+
+	e = os.WriteFile(name+".json", data, 0666)
+	if e != nil {
+		return nil, e
+	}
+
+	return &study, nil
+}
+
 type Study struct {
 	Name     string  `json:"name"`
 	Filepath string  `json:"filepath"`

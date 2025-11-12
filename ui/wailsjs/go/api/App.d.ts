@@ -5,6 +5,8 @@ import { api } from '../models'
 
 export function AbsPath(arg1: string): Promise<string>
 
+export function CreateStudy(arg1: string, arg2: string): Promise<void>
+
 export function LoadStudy(arg1: string): Promise<study.Study>
 
 export function ParentPath(arg1: string): Promise<string>

@@ -1,32 +1,54 @@
 <script>
-	import { ParentPath, AbsPath, ReadDir } from '../../wailsjs/go/api/App'
-	import { Button } from '../lib'
+	import {
+		ParentPath,
+		AbsPath,
+		ReadDir,
+		CreateStudy,
+	} from '../../wailsjs/go/api/App'
+	import { Button, TextInput } from '../lib'
 
 	let dirFiles = $state([])
-	let absPath = $state('')
+	let absDirPath = $state('')
 	let backPath = $state('')
 	let dirPath = $state('.')
 
+	let showProjectNameInput = $state(false)
+	let newProjectName = $state('')
+
 	$effect(async () => {
-		absPath = await AbsPath(dirPath)
-		backPath = await ParentPath(absPath)
-		dirFiles = await ReadDir(absPath)
+		absDirPath = await AbsPath(dirPath)
+		backPath = await ParentPath(absDirPath)
+		dirFiles = await ReadDir(absDirPath)
 	})
 
-	// NEXT: "Create Project Here" functionality
+	async function createNewProject() {
+		const name = newProjectName.trim()
+		const path = absDirPath
+
+		if (!name) {
+			return
+		}
+
+		showProjectNameInput = false
+		await CreateStudy(name, path)
+	}
+
+	const showProjectNameBox = () => (showProjectNameInput = true)
+	const hideProjectNameBox = () => (showProjectNameInput = false)
+	const gotoParentDir = () => (dirPath = backPath)
 </script>
 
 <main>
 	<div class="file-browser-view">
 		<div class="dir-info">
 			<span>
-				<Button onclick={() => (dirPath = backPath)}>Back</Button>
+				<Button onclick={gotoParentDir}>Back</Button>
 			</span>
 			<span class="dir-path">
-				{absPath}
+				{absDirPath}
 			</span>
 			<span>
-				<Button>Create Project Here</Button>
+				<Button onclick={showProjectNameBox}>Create Project Here</Button>
 			</span>
 		</div>
 		<div class="dir-files">
@@ -49,10 +71,27 @@
 			{/each}
 		</div>
 	</div>
+
+	{#if showProjectNameInput}
+		<div class="project-name-modal-bg" onclick={hideProjectNameBox}>
+			<div class="project-name-modal" onclick={(e) => e.stopPropagation()}>
+				<label class="project-name-input-label" for="project-name-input"
+					>Project Name</label>
+				<TextInput
+					autofocus
+					id="project-name-input"
+					bind:value={newProjectName} />
+				<Button class="submit-project-name-button" onclick={createNewProject}
+					>Create</Button>
+			</div>
+		</div>
+	{/if}
 </main>
 
 <style>
 	main {
+		position: relative;
+
 		width: 100%;
 		height: 100%;
 	}
@@ -104,5 +143,45 @@
 	.dir-file-name {
 		display: flex;
 		align-items: center;
+	}
+
+	.project-name-modal-bg {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		top: 0;
+		left: 0;
+
+		width: 100%;
+		height: 100%;
+
+		background: #88888888;
+	}
+
+	.project-name-input-label {
+		font-weight: bold;
+		width: 100%;
+	}
+
+	.project-name-modal {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.5rem;
+
+		max-width: 600px;
+		max-height: 400px;
+
+		padding: 1rem;
+
+		border: 2px solid black;
+		border-radius: 6px;
+		background: white;
+	}
+
+	.submit-project-name-button {
+		align-self: flex-end;
 	}
 </style>
